@@ -17,6 +17,9 @@ class Admin extends Model
     {
         return $this->belongsTo(Grade::class);
     }
+    public function section(){
+        return $this->belongsto(Section::class);
+    }
     public function student()
     {
         return $this->hasMany(Student::class);
