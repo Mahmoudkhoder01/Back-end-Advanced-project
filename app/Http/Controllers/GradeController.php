@@ -17,8 +17,15 @@ class GradeController extends Controller
             'message'=> "grade created successfully!",
         ]);
     }
+    public function getGrades(Request $request){
+        $grades = Grade::all();
+        return response()->json([
+            'message'=>$grades,
+        ]);
+    }
+
     public function getGrade(Request $request,$id){
-        $grade = Grade::find($id)->get();
+        $grade = Grade::find($id);
         return response()->json([
             'message'=>$grade,
         ]);
