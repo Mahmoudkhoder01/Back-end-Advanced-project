@@ -27,3 +27,10 @@ Route::Post('/grade',[GradeController::class,'addGrade']);
 Route::Get('/grade/{id}',[GradeController::class,'getGrade']);
 Route::Delete('/grade/{id}',[GradeController::class,'deleteGrade']);
 Route::Put('/grade/{id}',[GradeController::class,'editGrade']);
+
+
+Route::Get('/admin',[AdminController::class,'getAll']);
+Route::Get('/admin/{id}',[AdminController::class,'getById']);
+Route::Post('/admin',[AdminController::class,'addAdmin']);
+Route::Delete('/admin/{id}',[AdminController::class,'deleteAdmin']);
+Route::Patch('/admin/{id}',[AdminController::class,'editAdmin']);
