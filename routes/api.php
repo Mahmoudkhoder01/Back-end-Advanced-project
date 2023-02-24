@@ -2,7 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\attendanceController;
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\StudentController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -17,5 +20,8 @@ use App\Http\Controllers\attendanceController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+
 });
-// Route::Post('/attendance',[attendanceController::class,'takeAttendance']);
+
+Route::post('/students', [StudentController::class, 'store'])
+
