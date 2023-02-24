@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Schema::create('attendances', function (Blueprint $table) {
-        //     $table->id();
-        //     $table->enum("status",["present","absent","late"]);
-        //     $table->unsignedBigInteger('section_id');
-        //     $table->foreign('section_id')->references('id')->on('sections')->onDelete('cascade');
-        //     $table->unsignedBigInteger('student_id');
-        //     $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
-        //     $table->timestamps();
-        // });
+        Schema::create('attendances', function (Blueprint $table) {
+            $table->id();
+            $table->enum("status",["present","absent","late"]);
+            $table->unsignedBigInteger('section_id');
+            $table->foreign('section_id')->references('id')->on('sections')->onDelete('cascade');
+            $table->unsignedBigInteger('student_id');
+            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
+            $table->timestamps();
+        });
     }
   
     /**
