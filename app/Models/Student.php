@@ -19,4 +19,4 @@ class Student extends Model
     {
         return $this->hasMany(Attendance::class);
     }
-}
+}  
