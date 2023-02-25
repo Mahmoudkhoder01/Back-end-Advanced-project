@@ -9,23 +9,23 @@ class attendance extends Model
 {
     use HasFactory;
 
-    // protected $fillable = [
+    protected $fillable = [
         
-    //     'status',
-    // ];
+        'status',
+    ];
     
 
-    // public function section(){
-    //     return $this->belongsTo(section::class);
-    // }
+    public function section(){
+        return $this->belongsTo(Section::class);
+    }
 
-    //  public function student(){
-    //     return $this->belongsTo(student::class);
-    // }
+     public function student(){
+        return $this->belongsTo(Student::class);
+    }
 
-    // public function students(){
-    //     return $this->belongsToMany(student::class);
-    // }
+    public function students(){
+        return $this->belongsToMany(Student::class);
+    }
 
 
     

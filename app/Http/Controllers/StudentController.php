@@ -94,7 +94,7 @@ class StudentController extends Controller
         $validatedData = $request->validate([
             'first_name' => 'required|max:255',
             'last_name' => 'required|max:255',
-            'email' => 'required|email|unique:students,email'
+            'email' => 'required|email|unique:students,email',
            'birth_date' => 'required|date',
            'phone_number' => 'required',
            'enrollment_date' => 'required|date',

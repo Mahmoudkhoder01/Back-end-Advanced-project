@@ -21,10 +21,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 });
 
-
-Route::post('/students', [StudentController::class, 'store']);
-Route::Post('/grade',[GradeController::class,'addGrade']);
-Route::Get('/grade',[GradeController::class,'getGrades']);
-Route::Get('/grade/{id}',[GradeController::class,'getGrade']);
-Route::Delete('/grade/{id}',[GradeController::class,'deleteGrade']);
-Route::Put('/grade/{id}',[GradeController::class,'editGrade']);
+Route::post('/students', [StudentController::class, 'store'])
