@@ -7,8 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Section extends Model
 {
-
-    public function class()
+    use HasFactory;
+    protected $fillable = [
+        'section_description',
+        'capacity',
+    ];
+    public function grade()
     {
         return $this->belongsTo(Grade::class);
     }
