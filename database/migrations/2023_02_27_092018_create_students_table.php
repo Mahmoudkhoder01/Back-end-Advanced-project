@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('students', function (Blueprint $table) {
-            $table->id();
+            $table->id();#
+        
             $table->text('first_name');
             $table->text('last_name');
             $table->string('email');
@@ -20,9 +21,12 @@ return new class extends Migration
             $table->text('phone_number');
             $table->date('enrollment_date');
             $table->string('headshot')->nullable();
-            $table->bigInteger('attendance')->default(0);
+            $table->bigInteger('attendance')->unsigned();
+            $table->foreign('attendance')->references('id')->on('attendance')->onDelete('cascade');
             $table->bigInteger('section_id')->unsigned();
             $table->foreign('section_id')->references('id')->on('sections')->onDelete('cascade');
+
+
             $table->timestamps();
         });
     }

@@ -2,8 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\StudentController;
+use App\Http\Controllers\studentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,4 +22,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 
-Route::post('/students', [StudentController::class, 'store'])
+Route::Post('/students', [studentController::class, 'store']);
+Route::Get('/students', [studentController::class, 'GetStudents']);
+Route::Get('/students/{id}', [studentController::class, 'GetStudentsById']);
+Route::Delete('/students/{id}', [studentController::class, 'deletestudents']);
+Route::Patch('/students/{id}', [studentController::class, 'editstudents']);
+
+
+
