@@ -20,8 +20,8 @@ return new class extends Migration
             $table->text('phone_number');
             $table->date('enrollment_date');
             $table->string('headshot')->nullable();
-            $table->bigInteger('attendance')->default(0);
-            $table->bigInteger('section_id')->unsigned();
+            $table->unsignedInteger('attendance')->default(0);
+            $table->unsignedBigInteger('section_id');
             $table->foreign('section_id')->references('id')->on('sections')->onDelete('cascade');
             $table->timestamps();
         });

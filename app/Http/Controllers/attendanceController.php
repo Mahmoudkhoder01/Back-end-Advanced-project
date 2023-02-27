@@ -7,6 +7,7 @@ use App\Models\attendance;
 use App\Models\Section;
 use App\Models\Student;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Student;
 
 class attendanceController extends Controller
 {
@@ -14,37 +15,19 @@ class attendanceController extends Controller
     {
         $attendance = new attendance;
         $status = $request->input('status');
+
+        $section_id = $request->input('section_id');
         $student_id = $request->input('student_id');
-        $section_id = $request->input('section_id');  
+        $section = Student::find($section_id);
         $student = Student::find($student_id);
-        $section = Section::find($section_id);
-        $attendance->status = $status;
-        $attendance->student()->associate($student);
         $attendance->section()->associate($section);
+        $attendance->student()->associate($student);
+        $attendance->status = $status;
         $attendance->save();
         return response()->json([
-            'message' => 'Attendance registered!',
+            'message' => 'Attendance taked!',
 
         ]);
     }
-
-    public function getStudentByNameInAttendanceSheet(Request $request, $student_first_name, $student_last_name)
-    {
-        $attendance = attendance::find($id)->with(['profile'])->get();
-        
-        return response()->json([
-            'message' => $attendance->$status,
-
-        ]);
-    }
-    public function getAuthor(Request $request, $id){
-         
-        $author =  Author::find($id)->with(['profile'])->get();
-  
-        return response()->json([
-            'message' => $author,
-     
-        ]);
-    }
-    
 }
+
