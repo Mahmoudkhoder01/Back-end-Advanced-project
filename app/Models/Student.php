@@ -7,16 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
-    public function class()
-    {
-        return $this->belongsTo(Grade::class);
-    }
+    // public function class()
+    // {
+    //     return $this->belongsTo(Grade::class);
+    // }
     public function section()
     {
-        return $this->hasMany(Section::class);
+        return $this->belongsTo(Section::class);
     }
-  public function attendance()
+    public function attendance()
     {
         return $this->hasMany(Attendance::class);
     }
-}  
+}

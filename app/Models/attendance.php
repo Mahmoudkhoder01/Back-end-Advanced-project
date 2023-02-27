@@ -4,29 +4,25 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Student;
 
 class attendance extends Model
 {
     use HasFactory;
 
-    // protected $fillable = [
-        
-    //     'status',
-    // ];
-    
+    protected $fillable = [
 
-    // public function section(){
-    //     return $this->belongsTo(section::class);
-    // }
-
-    //  public function student(){
-    //     return $this->belongsTo(student::class);
-    // }
-
-    // public function students(){
-    //     return $this->belongsToMany(student::class);
-    // }
+        'status',
+    ];
 
 
-    
+    public function studentSection()
+    {
+        return $this->belongsTo(Student::class);
+    }
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class);
+    }
 }
