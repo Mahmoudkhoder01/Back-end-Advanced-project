@@ -20,8 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
-Route::post('/students', [StudentController::class, 'store']);
+Route::Post('/students', [StudentController::class, 'store']);
 Route::Post('/grade', [GradeController::class, 'addGrade']);
 Route::Get('/grade', [GradeController::class, 'getGrades']);
 Route::Get('/grade/{id}', [GradeController::class, 'getGrade']);
@@ -40,3 +39,4 @@ Route::Get('/section/{id}', [sectioncontroller::class, 'getSection']);
 Route::Get('/section', [sectioncontroller::class, 'getSections']);
 Route::Delete('/section/{id}', [sectioncontroller::class, 'deleteSection']);
 Route::Patch('/section/{id}', [sectioncontroller::class, 'editSection']);
+
