@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\attendance;
+use App\Models\Section;
+use App\Models\Student;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Student;
 
@@ -13,6 +15,7 @@ class attendanceController extends Controller
     {
         $attendance = new attendance;
         $status = $request->input('status');
+
         $section_id = $request->input('section_id');
         $student_id = $request->input('student_id');
         $section = Student::find($section_id);
@@ -27,3 +30,4 @@ class attendanceController extends Controller
         ]);
     }
 }
+

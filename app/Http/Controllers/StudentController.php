@@ -64,14 +64,17 @@ class StudentController extends Controller
 
     public function getStudents(Request $request)
     {
+
         $student = Student::all();
         return response()->json([
             'message' => $student,
         ]);
+
     }
     /**
      * Display the specified resource.
      */
+
     // public function show(string $id): Response
     // {
     //     return view('students.show', compact('student'));
@@ -122,3 +125,4 @@ class StudentController extends Controller
 
     // }
 }
+

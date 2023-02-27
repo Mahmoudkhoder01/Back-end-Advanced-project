@@ -11,7 +11,6 @@ class attendance extends Model
     use HasFactory;
 
     protected $fillable = [
-
         'status',
     ];
 
@@ -19,7 +18,6 @@ class attendance extends Model
     public function studentSection()
     {
         return $this->belongsTo(Student::class);
-    }
 
     public function student()
     {
