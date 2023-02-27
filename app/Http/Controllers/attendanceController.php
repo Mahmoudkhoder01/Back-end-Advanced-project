@@ -48,5 +48,34 @@ class attendanceController extends Controller
            "message" => $attendance
         ]);
     }
+    public function editAttendance(Request $request, $id){
+        $attendance = attendance::find($id);
+        if (!$attendance){
+            return response()->json([
+                'message' => 'attendance not found!',
+            ]);
+        }
+        $inputs = [
+            'status' => $request->input('status')
+        ];
+        $attendance->update($inputs);
+        return response()->json([
+            'message' => 'attendance edited successfully!',
+            'attendance' => $attendance,
+        ]);
+    }
+    public function deleteAttendance(Request $request, $id){
+        $attendance = attendance::find($id);
+        if (!$attendance){
+            return response()->json([
+                'message' => 'attendance not found!',
+            ]);
+        }
+        $attendance->delete();
+        return response()->json([
+            'message' => 'attendance deleted Successfully!',
+     
+        ]);
+    }
 }
 
