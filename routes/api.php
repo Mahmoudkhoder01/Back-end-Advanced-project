@@ -23,16 +23,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
+//student routes
 Route::Post('/students', [StudentController::class, 'store']);
 Route::Get('/students', [StudentController::class, 'getStudents']);
+
+//grade routes
 Route::Post('/grade', [GradeController::class, 'addGrade']);
 Route::Get('/grade', [GradeController::class, 'getGrades']);
 Route::Get('/grade/{id}', [GradeController::class, 'getGrade']);
 Route::Delete('/grade/{id}', [GradeController::class, 'deleteGrade']);
 Route::Put('/grade/{id}', [GradeController::class, 'editGrade']);
 
-
+//admin routes
 Route::Get('/admin', [AdminController::class, 'getAll']);
 Route::Get('/admin/{id}', [AdminController::class, 'getById']);
 Route::Post('/admin', [AdminController::class, 'addAdmin']);
@@ -44,10 +46,11 @@ Route::Get('/section/{id}', [sectioncontroller::class, 'getSection']);
 Route::Get('/section', [sectioncontroller::class, 'getSections']);
 Route::Delete('/section/{id}', [sectioncontroller::class, 'deleteSection']);
 Route::Patch('/section/{id}', [sectioncontroller::class, 'editSection']);
-
+//attendance routes
 Route::Post('/attendance', [attendancecontroller::class, 'takeAttendance']);
-Route::Get('/attendance/{id}', [attendancecontroller::class, 'getAttendance']);
-Route::Get('/attendance', [attendancecontroller::class, 'getAttendance']);
+Route::Get('/attendance', [attendancecontroller::class, 'getAll']);
+Route::Get('/attendance/student/{student_id}', [attendancecontroller::class, 'getAttendanceByStudentId']);
+Route::Get('/attendance/section/{section_id}', [attendancecontroller::class, 'getAttendanceBySectionId']);
 Route::Delete('/attendance/{id}', [attendancecontroller::class, 'deleteAttendance']);
 Route::Patch('/attendance/{id}', [attendancecontroller::class, 'editAttendance']);
 

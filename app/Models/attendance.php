@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Student;
+use App\Models\Section;
 
 class attendance extends Model
 {
@@ -14,11 +15,10 @@ class attendance extends Model
         'status',
     ];
 
-
-    public function studentSection()
+    public function section()
     {
-        return $this->belongsTo(Student::class);
-
+        return $this->belongsTo(Section::class);
+    }
     public function student()
     {
         return $this->belongsTo(Student::class);
