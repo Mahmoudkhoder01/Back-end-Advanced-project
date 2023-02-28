@@ -7,6 +7,8 @@ use App\Http\Controllers\sectioncontroller;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\attendanceController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AuthController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -54,3 +56,13 @@ Route::Get('/attendance/section/{section_id}', [attendancecontroller::class, 'ge
 Route::Delete('/attendance/{id}', [attendancecontroller::class, 'deleteAttendance']);
 Route::Patch('/attendance/{id}', [attendancecontroller::class, 'editAttendance']);
 
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'auth'
+], function ($router) {
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/refresh', [AuthController::class, 'refresh']);
+    Route::get('/user-profile', [AuthController::class, 'userProfile']);    
+});
