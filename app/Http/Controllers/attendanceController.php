@@ -14,7 +14,6 @@ class attendanceController extends Controller
     {
         $attendance = new attendance;
         $status = $request->input('status');
-
         $section_id = $request->input('section_id');
         $student_id = $request->input('student_id');
         $student = Student::find($student_id);
@@ -58,6 +57,11 @@ class attendanceController extends Controller
         $inputs = [
             'status' => $request->input('status')
         ];
+        if($attendance->name == $request->input('status')){
+            return response()->json([
+                'message' => 'The attendance is the same as the old one!'
+            ]);
+        }
         $attendance->update($inputs);
         return response()->json([
             'message' => 'attendance edited successfully!',

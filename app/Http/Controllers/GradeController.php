@@ -26,6 +26,11 @@ class GradeController extends Controller
 
     public function getGrade(Request $request,$id){
         $grade = Grade::find($id);
+        if (!$grade){
+            return response()->json([
+                'message' => 'Grade not found!',
+            ]);
+        }
         return response()->json([
             'message'=>$grade,
         ]);
@@ -56,6 +61,13 @@ public function editGrade(Request $request, $id){
     $inputs = [
         'name' => $request->input('name')
     ];
+
+    if($grade->name == $request->input('name')){
+        return response()->json([
+            'message' => 'The grade is the same as the old one!'
+        ]);
+    }
+
     $grade->update($inputs);
 
     return response()->json([

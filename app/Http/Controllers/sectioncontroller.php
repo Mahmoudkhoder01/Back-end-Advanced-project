@@ -67,6 +67,18 @@ class sectioncontroller extends Controller
             'section_description' => $request->input('section_description'),
             'capacity' => $request->input('capacity')
         ];
+        if ($section->section_description == $request->input('section_description')) {
+            return response()->json([
+                'message' => 'The section description is the same as the old one!'
+            ]);
+        }
+
+        if ($section->capacity == $request->input('capacity')) {
+            return response()->json([
+                'message' => 'The section capacity is the same as the old one!'
+            ]);
+        }
+
         $section->update($inputs);;
 
         return response()->json([
