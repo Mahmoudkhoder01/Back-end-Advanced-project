@@ -42,7 +42,15 @@ class StudentController extends Controller
         $enroll = $request->input('enrollment_date');
         $headshot = $request->input('headshot');
         $section_id = $request->input('section_id');
+        
         $section = Section::find($section_id);
+        // Check if we don't have a section
+        if (!$section) {
+            return response()->json([
+                'message' => 'No section found to add a new student',
+            ], 404);
+        }
+
         $student->first_name = $First_name;
         $student->last_name = $Last_name;
         $student->email = $email;
