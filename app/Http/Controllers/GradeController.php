@@ -8,72 +8,90 @@ use App\Models\Section;
 
 class GradeController extends Controller
 {
-    public function addGrade(Request $request){
+    // Add a new grade
+    public function addGrade(Request $request)
+    {
         $grade = new Grade;
-        $name = $request -> input ('name');
+        $name = $request->input('name');
         $grade->name = $name;
         $grade->save();
         return response()->json([
-            'message'=> "grade created successfully!",
-        ]);
-    }
-    public function getGrades(Request $request){
-        $grades = Grade::all();
-        return response()->json([
-            'message'=>$grades,
+            'message' => "grade created successfully!",
         ]);
     }
 
-    public function getGrade(Request $request,$id){
+    // Get all grades
+    public function getGrades(Request $request)
+    {
+        $grades = Grade::all();
+        return response()->json([
+            'message' => $grades,
+        ]);
+    }
+
+    // Get a grade by id
+    public function getGrade(Request $request, $id)
+    {
         $grade = Grade::find($id);
-        if (!$grade){
+        // Check if the grade not exists
+        if (!$grade) {
             return response()->json([
                 'message' => 'Grade not found!',
             ]);
         }
         return response()->json([
-            'message'=>$grade,
+            'message' => $grade,
         ]);
     }
 
 
-   public function deleteGrade(Request $request, $id){
-         
-    $grade =  Grade::find($id);
-    if (!$grade){
+    // Delete an existing grade
+    public function deleteGrade(Request $request, $id)
+    {
+
+        $grade =  Grade::find($id);
+        // Check if the grade not exists
+        if (!$grade) {
+            return response()->json([
+                'message' => 'grade not found!',
+            ]);
+        }
+
+        $grade->delete();
+
         return response()->json([
-            'message' => 'grade not found!',
+            'message' => 'grade deleted Successfully!',
+
         ]);
     }
-    $grade->delete();
-    return response()->json([
-        'message' => 'grade deleted Successfully!',
- 
-    ]);
-}
-public function editGrade(Request $request, $id){
-    $grade = Grade::find($id);
-    if (!$grade){
+
+    // Edit an existing grade
+    public function editGrade(Request $request, $id)
+    {
+        $grade = Grade::find($id);
+        // Check if the grade not exists
+        if (!$grade) {
+            return response()->json([
+                'message' => 'grade not found!',
+            ]);
+        }
+
+        $inputs = [
+            'name' => $request->input('name')
+        ];
+
+        //Check if the grade has already been
+        if ($grade->name == $request->input('name')) {
+            return response()->json([
+                'message' => 'The grade name is the same as the old one!'
+            ]);
+        }
+
+        $grade->update($inputs);
+
         return response()->json([
-            'message' => 'grade not found!',
+            'message' => 'grade edited successfully!',
+            'grade' => $grade,
         ]);
     }
-    $inputs = [
-        'name' => $request->input('name')
-    ];
-
-    if($grade->name == $request->input('name')){
-        return response()->json([
-            'message' => 'The grade is the same as the old one!'
-        ]);
-    }
-
-    $grade->update($inputs);
-
-    return response()->json([
-        'message' => 'grade edited successfully!',
-        'grade' => $grade,
-    ]);
-}
-
 }
