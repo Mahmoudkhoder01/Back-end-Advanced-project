@@ -98,6 +98,14 @@ class StudentController extends Controller
 
     public function deleteStudent(Request $request, $id){
         $student = Student::find($id);
+
+        // Check if the attendance not exists
+        if (!$student) {
+            return response()->json([
+                'message' => 'attendance not found!',
+            ]);
+        }
+
         $student->delete();
         return response()->json([
             'message' => 'student deleted Successfully!',

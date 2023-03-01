@@ -60,7 +60,6 @@ Route::Delete('/attendance/{id}', [attendancecontroller::class, 'deleteAttendanc
 Route::Patch('/attendance/{id}', [attendancecontroller::class, 'editAttendance']);
 
 Route::group([
-    'middleware' => 'api',
     'prefix' => 'auth'
 ], function ($router) {
     Route::post('/login', [AuthController::class, 'login']);
