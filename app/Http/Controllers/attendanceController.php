@@ -18,6 +18,15 @@ class attendanceController extends Controller
         $section_id = $request->input('section_id');
         $student_id = $request->input('student_id');
         $date = $request->input('date');
+        
+        // Check if date is today
+        if ($date !== date('Y-m-d')) {
+            return response()->json([
+                'message' => 'Attendance can only be taken for today',
+            ], 400);
+        }
+
+
         $student = Student::find($student_id);
         if (!$student) {
             return response()->json([
@@ -35,6 +44,7 @@ class attendanceController extends Controller
         $attendance->section()->associate($section);
         $attendance->student()->associate($student);
         $attendance->status = $status;
+        $attendance->date = $date;
         $attendance->save();
 
         return response()->json([
@@ -45,7 +55,7 @@ class attendanceController extends Controller
 
     // Get all attendances
     public function getAll(Request $req)
-    {  
+    {
         $attendance = attendance::get();
         return response()->json([
             "message" => $attendance
@@ -109,7 +119,7 @@ class attendanceController extends Controller
         }
 
         $attendance->update($inputs);
-        
+
         return response()->json([
             'message' => 'attendance edited successfully!',
             'attendance' => $attendance,
