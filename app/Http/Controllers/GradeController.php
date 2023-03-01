@@ -5,12 +5,25 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Grade;
 use App\Models\Section;
+use Illuminate\Support\Facades\Validator;
+
 
 class GradeController extends Controller
 {
     // Add a new grade
     public function addGrade(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|min:6',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => $validator->errors()->first(),
+            ], 422);
+        }
+
+
         $grade = new Grade;
         $name = $request->input('name');
         $grade->name = $name;
