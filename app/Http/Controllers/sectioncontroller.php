@@ -16,6 +16,7 @@ class sectioncontroller extends Controller
         $capacity = $request->input('capacity');
         $grade_id = $request->input('grade');
         $grade = Grade::find($grade_id);
+        
         //Check if there is no grade to add a section
         if (!$grade) {
             return response()->json([
