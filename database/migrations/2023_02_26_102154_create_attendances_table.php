@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
             $table->enum("status",["present","absent","late"]);
+            $table->date('date')->unique();
             $table->unsignedBigInteger('section_id');
             $table->foreign('section_id')->references('id')->on('sections')->onDelete('cascade');
             $table->unsignedBigInteger('student_id');

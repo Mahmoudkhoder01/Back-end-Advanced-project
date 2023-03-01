@@ -99,4 +99,43 @@ class AuthController extends Controller
             'user' => auth()->user()
         ]);
     }
+
+    public function deleteUser(Request $req, $id){
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'attendance not found!',
+            ]);
+        }
+
+        $user->delete();
+        return response()->json([
+            'message' => 'User deleted Successfully!',
+        ]);
+    }
+
+    public function editUser(Request $req, $id){
+        $user =  User::find($id);
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'attendance not found!',
+            ]);
+        }
+
+        $inputs= $req->all();
+        $user->update($inputs);
+        return response()->json([
+            'message' => 'User edited successfully!',
+            'User' => $user,
+        ]);
+    }
+
+    public function getAll(Request $req){
+        $user = User::get();
+        return response()->json([
+           "message" => $user
+        ]);
+     }
 }
