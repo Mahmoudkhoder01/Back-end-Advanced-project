@@ -14,7 +14,7 @@ class GradeController extends Controller
     public function addGrade(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|min:6',
+            'name' => 'required|unique:grades',
         ]);
     
         if ($validator->fails()) {
