@@ -34,13 +34,15 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         $student = new Student;
+        
         $First_name = $request->input('first_name');
         $Last_name = $request->input('last_name');
         $email = $request->input('email');
         $birth_date = $request->input('birth_date');
         $phone = $request->input('phone_number');
         $enroll = $request->input('enrollment_date');
-        $headshot = $request->input('headshot');
+        //$headshot = $request->input('headshot');
+        $image_path = $request -> file('image')->store('images','public');
         $section_id = $request->input('section_id');
         $section = Section::find($section_id);
         $student->first_name = $First_name;
@@ -49,7 +51,8 @@ class StudentController extends Controller
         $student->birth_date = $birth_date;
         $student->phone_number = $phone;
         $student->enrollment_date = $enroll;
-        $student->headshot = $headshot;
+       // $student->headshot = $headshot;
+        $student->headshot = $image_path;
         $student->Section()->associate($section);
         $student->save();
 
@@ -64,13 +67,45 @@ class StudentController extends Controller
 
     public function getStudents(Request $request)
     {
-
         $student = Student::all();
         return response()->json([
             'message' => $student,
         ]);
 
     }
+
+    public function getStudent(Request $request, $id)
+    {
+        $student = Student::find($id);
+        if (!$student){
+            return response()->json([
+                'message' => 'student not found!',
+            ]);
+        }
+        return response()->json([
+            'message' => $student,
+        ]);
+
+    }
+
+    public function deleteStudent(Request $request, $id){
+        $student = Student::find($id);
+        $student->delete();
+        return response()->json([
+            'message' => 'student deleted Successfully!',
+        ]);
+    }
+
+
+    public function editStudent(Request $request, $id){
+        $student =  Student::find($id);
+        $inputs= $request->except('_method');
+        $student->update($inputs);
+        return response()->json([
+            'message' => 'student edited successfully!',
+            'students' => $student,     
+        ]);
+   }
     /**
      * Display the specified resource.
      */

@@ -6,7 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
-{
+{    use HasFactory;
+    protected $fillable = [
+        "first_name",
+        "last_name",
+        "email",
+        "birth_date",
+        "phone_number",
+        "enrollment_date",
+        "headhsot"
+    ];
     public function section()
     {
         return $this->belongsTo(Section::class);
