@@ -17,7 +17,7 @@ class attendanceController extends Controller
         $status = $request->input('status');
         $section_id = $request->input('section_id');
         $student_id = $request->input('student_id');
-
+        $date = $request->input('date');
         $student = Student::find($student_id);
         if (!$student) {
             return response()->json([
@@ -67,6 +67,7 @@ class attendanceController extends Controller
             "message" => $attendance
         ]);
     }
+
 
     // Get an attendance by section id
     public function getAttendanceBySectionId(Request $req, $section_id)
