@@ -72,19 +72,6 @@ class StudentController extends Controller
         ]);
     }
 
-    // public function getStudents(Request $request)
-    // {
-    //     $students = Student::all();
-    //     $first_name = Student::Where('first_name', '<=', now())->orderBy('first_name', 'asc')->paginate(5);
-    //     foreach($first_name as $each){
-    //         $each -> students;
-    //     }
-
-    //     return response()->json([
-    //         'message' => $first_name,
-    //     ]);
-    // }
-
     public function getStudents(Request $request)
     {
         $students = Student::orderBy('first_name', 'asc')
