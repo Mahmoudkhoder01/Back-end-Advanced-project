@@ -58,6 +58,8 @@ Route::Get('/attendance/student/{student_id}', [attendancecontroller::class, 'ge
 Route::Get('/attendance/section/{section_id}', [attendancecontroller::class, 'getAttendanceBySectionId']);
 Route::Delete('/attendance/{id}', [attendancecontroller::class, 'deleteAttendance']);
 Route::Patch('/attendance/{id}', [attendancecontroller::class, 'editAttendance']);
+Route::Get('/attendance/student/{student_id}/daterange', [attendancecontroller::class, 'getAttendanceByStudentIdAndDateRange']);
+
 
 Route::group([
     'prefix' => 'auth'
@@ -67,4 +69,7 @@ Route::group([
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::get('/user-profile', [AuthController::class, 'userProfile']);    
+    Route::patch('/edit/{id}', [AuthController::class, 'editUser']);    
+    Route::delete('/delete/{id}', [AuthController::class, 'deleteUser']);    
+    Route::get('/', [AuthController::class, 'getAll']);    
 });

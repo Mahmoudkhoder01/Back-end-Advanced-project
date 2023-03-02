@@ -14,12 +14,14 @@ class attendanceController extends Controller
     //Take an attendance
     public function takeAttendance(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
             'status' => 'required|in:present,absent',
             'section_id' => 'required|exists:sections,id',
             'student_id' => 'required|exists:students,id',
             'date' => 'required|date',
         ]);
+
 
         if ($validator->fails()) {
             return response()->json([
@@ -33,6 +35,7 @@ class attendanceController extends Controller
         $attendance->section()->associate($request->input('section_id'));
         $attendance->student()->associate($request->input('student_id'));
         $attendance->status = $request->input('status');
+
         $attendance->save();
 
         return response()->json([
@@ -67,6 +70,7 @@ class attendanceController extends Controller
             "message" => $attendance
         ]);
     }
+
 
     // Get an attendance by section id
     public function getAttendanceBySectionId(Request $req, $section_id)
