@@ -13,15 +13,16 @@ return new class extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
-            $table->enum("status",["present","absent","late"]);
+            $table->enum("status", ["present", "absent", "late"]);
             $table->unsignedBigInteger('section_id');
+            $table->date('attendance_date');
             $table->foreign('section_id')->references('id')->on('sections')->onDelete('cascade');
             $table->unsignedBigInteger('student_id');
             $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
             $table->timestamps();
         });
     }
-  
+
     /**
      * Reverse the migrations.
      */

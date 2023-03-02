@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\attendance;
 use App\Models\Student;
 use App\Models\Section;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 
 class attendanceController extends Controller
@@ -13,39 +14,38 @@ class attendanceController extends Controller
     //Take an attendance
     public function takeAttendance(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'status' => 'required|in:present,absent',
+            'section_id' => 'required|exists:sections,id',
+            'student_id' => 'required|exists:students,id',
+            'date' => 'required|date',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
         $attendance = new attendance;
-        $status = $request->input('status');
-        $section_id = $request->input('section_id');
-        $student_id = $request->input('student_id');
-
-        $student = Student::find($student_id);
-        if (!$student) {
-            return response()->json([
-                'message' => 'No student found to take attendance',
-            ], 404);
-        }
-
-        $section = Section::find($section_id);
-        if (!$section) {
-            return response()->json([
-                'message' => 'No section found to take attendance',
-            ], 404);
-        }
-
-        $attendance->section()->associate($section);
-        $attendance->student()->associate($student);
-        $attendance->status = $status;
+        $attendance->attendance_date = $request->input('date');
+        $attendance->section()->associate($request->input('section_id'));
+        $attendance->student()->associate($request->input('student_id'));
+        $attendance->status = $request->input('status');
         $attendance->save();
 
         return response()->json([
-            'message' => 'Attendance taked!',
-
+            'message' => 'Attendance taken!',
         ]);
     }
 
+
+
+
     // Get all attendances
     public function getAll(Request $req)
-    {  
+    {
         $attendance = attendance::get();
         return response()->json([
             "message" => $attendance
@@ -108,7 +108,7 @@ class attendanceController extends Controller
         }
 
         $attendance->update($inputs);
-        
+
         return response()->json([
             'message' => 'attendance edited successfully!',
             'attendance' => $attendance,
