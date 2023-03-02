@@ -16,16 +16,16 @@ class StudentController extends Controller
 
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|unique:students',
-            'phone_number' => 'required|unique:students'
+            'phone_number' => 'required|min:6|unique:students'
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json([
                 'message' => $validator->errors()->first(),
             ], 422);
         }
         $student = new Student;
-        
+
         $First_name = $request->input('first_name');
         $Last_name = $request->input('last_name');
         $email = $request->input('email');
@@ -33,9 +33,9 @@ class StudentController extends Controller
         $phone = $request->input('phone_number');
         $enroll = $request->input('enrollment_date');
         //$headshot = $request->input('headshot');
-        $image_path = $request -> file('image')->store('images','public');
+        $image_path = $request->file('image')->store('images', 'public');
         $section_id = $request->input('section_id');
-        
+
         $section = Section::find($section_id);
         // Check if we don't have a section
         if (!$section) {
@@ -58,7 +58,7 @@ class StudentController extends Controller
         $student->birth_date = $birth_date;
         $student->phone_number = $phone;
         $student->enrollment_date = $enroll;
-       // $student->headshot = $headshot;
+        // $student->headshot = $headshot;
         $student->headshot = $image_path;
         $student->Section()->associate($section);
         $student->save();
@@ -72,19 +72,33 @@ class StudentController extends Controller
         ]);
     }
 
+    // public function getStudents(Request $request)
+    // {
+    //     $students = Student::all();
+    //     $first_name = Student::Where('first_name', '<=', now())->orderBy('first_name', 'asc')->paginate(5);
+    //     foreach($first_name as $each){
+    //         $each -> students;
+    //     }
+
+    //     return response()->json([
+    //         'message' => $first_name,
+    //     ]);
+    // }
+
     public function getStudents(Request $request)
     {
-        $student = Student::all();
+        $students = Student::orderBy('first_name', 'asc')
+            ->paginate(10);
         return response()->json([
-            'message' => $student,
+            'message' => $students,
         ]);
-
     }
+
 
     public function getStudent(Request $request, $id)
     {
         $student = Student::find($id);
-        if (!$student){
+        if (!$student) {
             return response()->json([
                 'message' => 'student not found!',
             ]);
@@ -92,10 +106,10 @@ class StudentController extends Controller
         return response()->json([
             'message' => $student,
         ]);
-
     }
 
-    public function deleteStudent(Request $request, $id){
+    public function deleteStudent(Request $request, $id)
+    {
         $student = Student::find($id);
 
         // Check if the attendance not exists
@@ -112,14 +126,14 @@ class StudentController extends Controller
     }
 
 
-    public function editStudent(Request $request, $id){
+    public function editStudent(Request $request, $id)
+    {
         $student =  Student::find($id);
-        $inputs= $request->except('_method');
+        $inputs = $request->except('_method');
         $student->update($inputs);
         return response()->json([
             'message' => 'student edited successfully!',
-            'students' => $student,     
+            'students' => $student,
         ]);
-   }
+    }
 }
-
