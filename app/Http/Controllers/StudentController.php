@@ -16,7 +16,7 @@ class StudentController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email|unique:students',
+            'email' => ['required|email|unique:students','regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix'],
             'phone_number' => ['required', 'regex:/(^70|^71|^76|^78|^79|^81|^06|^03)[0-9]{6}$/'],
         ]);
 

@@ -59,6 +59,8 @@ Route::Get('/attendance/student/{student_id}', [attendancecontroller::class, 'ge
 Route::Get('/attendance/section/{section_id}', [attendancecontroller::class, 'getAttendanceBySectionId']);
 Route::Delete('/attendance/{id}', [attendancecontroller::class, 'deleteAttendance']);
 Route::Patch('/attendance/{id}', [attendancecontroller::class, 'editAttendance']);
+Route::Get('/attendance/student/{student_id}/daterange', [attendancecontroller::class, 'getAttendanceByStudentIdAndDateRange']);
+
 
 Route::group([
     'prefix' => 'auth'

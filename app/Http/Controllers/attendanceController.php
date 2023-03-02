@@ -18,14 +18,7 @@ class attendanceController extends Controller
         $section_id = $request->input('section_id');
         $student_id = $request->input('student_id');
         $date = $request->input('date');
-
-        // Check if date is today
-        if ($date !== date('Y-m-d')) {
-            return response()->json([
-                'message' => 'Attendance can only be taken for today',
-            ], 400);
-        }
-
+        
         $student = Student::find($student_id);
         if (!$student) {
             return response()->json([
@@ -76,6 +69,7 @@ class attendanceController extends Controller
             "message" => $attendance
         ]);
     }
+
 
     // Get an attendance by section id
     public function getAttendanceBySectionId(Request $req, $section_id)
