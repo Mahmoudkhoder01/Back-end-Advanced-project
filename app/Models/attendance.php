@@ -13,7 +13,7 @@ class attendance extends Model
 
     protected $fillable = [
         'status',
-        'date'
+        'attendance_date',
     ];
 
     public function section()
