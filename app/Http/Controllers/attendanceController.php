@@ -12,7 +12,7 @@ class attendanceController extends Controller
 {
     //Take an attendance
     public function takeAttendance(Request $request)
-    {
+    { 
         $attendance = new attendance;
         $status = $request->input('status');
         $section_id = $request->input('section_id');
