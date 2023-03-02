@@ -17,7 +17,7 @@ class StudentController extends Controller
 
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|unique:students',
-            'phone_number' => 'required|max:6|unique:students'
+            'phone_number' => ['required', 'regex:/(^70|^71|^76|^78|^79|^81|^06|^03)[0-9]{6}$/'],
         ]);
 
         if ($validator->fails()) {
@@ -84,7 +84,7 @@ class StudentController extends Controller
     }
 
      // Get a student by section id
-     public function getAttendanceBySectionId(Request $req, $section_id)
+     public function getStudentBySectionId(Request $req, $section_id)
      {
          $student = Student::where("section_id", $section_id)->get();
  
