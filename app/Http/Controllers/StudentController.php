@@ -34,7 +34,7 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         $student = new Student;
-        
+
         $First_name = $request->input('first_name');
         $Last_name = $request->input('last_name');
         $email = $request->input('email');
@@ -42,9 +42,11 @@ class StudentController extends Controller
         $phone = $request->input('phone_number');
         $enroll = $request->input('enrollment_date');
         //$headshot = $request->input('headshot');
-        $image_path = $request -> file('image')->store('images','public');
+        $image_path = $request->file('image')->store('images', 'public');
         $section_id = $request->input('section_id');
-        
+        $request->validate([
+            'email' => 'regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix'
+        ]);
         $section = Section::find($section_id);
         // Check if we don't have a section
         if (!$section) {
@@ -59,7 +61,7 @@ class StudentController extends Controller
         $student->birth_date = $birth_date;
         $student->phone_number = $phone;
         $student->enrollment_date = $enroll;
-       // $student->headshot = $headshot;
+        // $student->headshot = $headshot;
         $student->headshot = $image_path;
         $student->Section()->associate($section);
         $student->save();
@@ -79,13 +81,12 @@ class StudentController extends Controller
         return response()->json([
             'message' => $student,
         ]);
-
     }
 
     public function getStudent(Request $request, $id)
     {
         $student = Student::find($id);
-        if (!$student){
+        if (!$student) {
             return response()->json([
                 'message' => 'student not found!',
             ]);
@@ -93,10 +94,10 @@ class StudentController extends Controller
         return response()->json([
             'message' => $student,
         ]);
-
     }
 
-    public function deleteStudent(Request $request, $id){
+    public function deleteStudent(Request $request, $id)
+    {
         $student = Student::find($id);
 
         // Check if the attendance not exists
@@ -113,15 +114,16 @@ class StudentController extends Controller
     }
 
 
-    public function editStudent(Request $request, $id){
+    public function editStudent(Request $request, $id)
+    {
         $student =  Student::find($id);
-        $inputs= $request->except('_method');
+        $inputs = $request->except('_method');
         $student->update($inputs);
         return response()->json([
             'message' => 'student edited successfully!',
-            'students' => $student,     
+            'students' => $student,
         ]);
-   }
+    }
     /**
      * Display the specified resource.
      */
@@ -176,4 +178,3 @@ class StudentController extends Controller
 
     // }
 }
-
