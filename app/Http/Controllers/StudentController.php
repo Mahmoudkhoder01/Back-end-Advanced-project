@@ -11,21 +11,22 @@ use Illuminate\Http\Response;
 
 class StudentController extends Controller
 {
+    // Add a new student
     public function store(Request $request)
     {
 
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|unique:students',
-            'phone_number' => 'required|unique:students'
+            'phone_number' => ['required', 'regex:/(^70|^71|^76|^78|^79|^81|^06|^03)[0-9]{6}$/'],
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json([
                 'message' => $validator->errors()->first(),
             ], 422);
         }
         $student = new Student;
-        
+
         $First_name = $request->input('first_name');
         $Last_name = $request->input('last_name');
         $email = $request->input('email');
@@ -33,9 +34,9 @@ class StudentController extends Controller
         $phone = $request->input('phone_number');
         $enroll = $request->input('enrollment_date');
         //$headshot = $request->input('headshot');
-        $image_path = $request -> file('image')->store('images','public');
+        $image_path = $request->file('image')->store('images', 'public');
         $section_id = $request->input('section_id');
-        
+
         $section = Section::find($section_id);
         // Check if we don't have a section
         if (!$section) {
@@ -58,7 +59,7 @@ class StudentController extends Controller
         $student->birth_date = $birth_date;
         $student->phone_number = $phone;
         $student->enrollment_date = $enroll;
-       // $student->headshot = $headshot;
+        // $student->headshot = $headshot;
         $student->headshot = $image_path;
         $student->Section()->associate($section);
         $student->save();
@@ -72,19 +73,37 @@ class StudentController extends Controller
         ]);
     }
 
+    // get All Students
     public function getStudents(Request $request)
     {
-        $student = Student::all();
+        $students = Student::orderBy('first_name', 'asc')
+            ->paginate(10);
         return response()->json([
-            'message' => $student,
+            'message' => $students,
         ]);
-
     }
 
+     // Get a student by section id
+     public function getStudentBySectionId(Request $req, $section_id)
+     {
+         $student = Student::where("section_id", $section_id)->get();
+ 
+         if (!$student) {
+             return response()->json([
+                 'message' => 'Student not found!',
+             ]);
+         }
+ 
+         return response()->json([
+             "message" => $student
+         ]);
+     }
+ 
+     // Get a student by id
     public function getStudent(Request $request, $id)
     {
         $student = Student::find($id);
-        if (!$student){
+        if (!$student) {
             return response()->json([
                 'message' => 'student not found!',
             ]);
@@ -92,10 +111,11 @@ class StudentController extends Controller
         return response()->json([
             'message' => $student,
         ]);
-
     }
 
-    public function deleteStudent(Request $request, $id){
+    // Delete a student
+    public function deleteStudent(Request $request, $id)
+    {
         $student = Student::find($id);
 
         // Check if the attendance not exists
@@ -111,15 +131,15 @@ class StudentController extends Controller
         ]);
     }
 
-
-    public function editStudent(Request $request, $id){
+    // Edit a student
+    public function editStudent(Request $request, $id)
+    {
         $student =  Student::find($id);
-        $inputs= $request->except('_method');
+        $inputs = $request->except('_method');
         $student->update($inputs);
         return response()->json([
             'message' => 'student edited successfully!',
-            'students' => $student,     
+            'students' => $student,
         ]);
-   }
+    }
 }
-
