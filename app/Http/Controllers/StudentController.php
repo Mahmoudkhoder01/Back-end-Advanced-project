@@ -11,12 +11,13 @@ use Illuminate\Http\Response;
 
 class StudentController extends Controller
 {
+    // Add a new student
     public function store(Request $request)
     {
 
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|unique:students',
-            'phone_number' => 'required|min:6|unique:students'
+            'phone_number' => 'required|max:6|unique:students'
         ]);
 
         if ($validator->fails()) {
@@ -72,6 +73,7 @@ class StudentController extends Controller
         ]);
     }
 
+    // get All Students
     public function getStudents(Request $request)
     {
         $students = Student::orderBy('first_name', 'asc')
@@ -81,7 +83,23 @@ class StudentController extends Controller
         ]);
     }
 
-
+     // Get a student by section id
+     public function getAttendanceBySectionId(Request $req, $section_id)
+     {
+         $student = Student::where("section_id", $section_id)->get();
+ 
+         if (!$student) {
+             return response()->json([
+                 'message' => 'Student not found!',
+             ]);
+         }
+ 
+         return response()->json([
+             "message" => $student
+         ]);
+     }
+ 
+     // Get a student by id
     public function getStudent(Request $request, $id)
     {
         $student = Student::find($id);
@@ -95,6 +113,7 @@ class StudentController extends Controller
         ]);
     }
 
+    // Delete a student
     public function deleteStudent(Request $request, $id)
     {
         $student = Student::find($id);
@@ -112,7 +131,7 @@ class StudentController extends Controller
         ]);
     }
 
-
+    // Edit a student
     public function editStudent(Request $request, $id)
     {
         $student =  Student::find($id);
