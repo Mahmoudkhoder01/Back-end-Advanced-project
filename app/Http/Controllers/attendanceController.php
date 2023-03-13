@@ -45,7 +45,7 @@ class attendanceController extends Controller
 
     // Get all attendances
     public function getAll(Request $req)
-    {  
+    {
         $attendance = attendance::get();
         return response()->json([
             "message" => $attendance
@@ -67,7 +67,14 @@ class attendanceController extends Controller
             "message" => $attendance
         ]);
     }
+    // get attendance by date 
+    public function getAttendanceByDate(Request $request, $date)
+    {
 
+        $attendances = Attendance::whereDate('attendance_date', $date)->get();
+
+        return response()->json(['attendances' => $attendances]);
+    }
 
     // Get an attendance by section id
     public function getAttendanceBySectionId(Request $req, $section_id)
@@ -109,7 +116,7 @@ class attendanceController extends Controller
         }
 
         $attendance->update($inputs);
-        
+
         return response()->json([
             'message' => 'attendance edited successfully!',
             'attendance' => $attendance,

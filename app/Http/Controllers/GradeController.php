@@ -16,7 +16,7 @@ class GradeController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:grades',
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json([
                 'message' => $validator->errors()->first(),
@@ -36,7 +36,7 @@ class GradeController extends Controller
     // Get all grades
     public function getGrades(Request $request)
     {
-        $grades = Grade::all();
+        $grades = Grade::with('section')->get();
         return response()->json([
             'message' => $grades,
         ]);

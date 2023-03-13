@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Section;
 use App\Models\Grade;
+use App\Models\Student;
 
 class sectioncontroller extends Controller
 {
@@ -16,7 +17,7 @@ class sectioncontroller extends Controller
         $capacity = $request->input('capacity');
         $grade_id = $request->input('grade');
         $grade = Grade::find($grade_id);
-        
+
         //Check if there is no grade to add a section
         if (!$grade) {
             return response()->json([
@@ -48,7 +49,7 @@ class sectioncontroller extends Controller
     // Get all sections
     public function getSections(Request $request)
     {
-        $sections = Section::all();
+        $sections = Section::with('student')->get();
         return response()->json([
             'message' => $sections,
         ]);
@@ -100,7 +101,7 @@ class sectioncontroller extends Controller
 
         $inputs = [
             'section_description' => $request->input('section_description'),
-            'capacity' => $request->input('capacity')
+            'capacity' => $request->input('capacity'),
         ];
 
         if ($section->section_description == $request->input('section_description')) {
