@@ -14,7 +14,7 @@ class Student extends Model
         "birth_date",
         "phone_number",
         "enrollment_date",
-        "headhsot"
+        "headshot"
     ];
     public function section()
     {
