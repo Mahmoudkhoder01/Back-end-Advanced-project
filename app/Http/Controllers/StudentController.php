@@ -68,8 +68,6 @@ class StudentController extends Controller
         return  response()->json([
             'success' => true,
             'message' => 'Student was successfully added',
-
-
         ]);
     }
 

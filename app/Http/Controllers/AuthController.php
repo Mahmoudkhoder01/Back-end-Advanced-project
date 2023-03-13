@@ -13,7 +13,7 @@ class AuthController extends Controller
      * @return void
      */
     public function __construct() {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'getAll', 'editUser', 'deleteUser']]);
     }
     /**
      * Get a JWT via given credentials.
@@ -120,14 +120,14 @@ class AuthController extends Controller
 
         if (!$user) {
             return response()->json([
-                'message' => 'attendance not found!',
+                'message' => 'Admin not found!',
             ]);
         }
 
         $inputs= $req->all();
         $user->update($inputs);
         return response()->json([
-            'message' => 'User edited successfully!',
+            'message' => 'Admin edited successfully!',
             'User' => $user,
         ]);
     }

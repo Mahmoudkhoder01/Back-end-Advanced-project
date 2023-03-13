@@ -44,7 +44,7 @@ Route::Put('/grade/{id}', [GradeController::class, 'editGrade']);
 Route::Get('/admin', [AdminController::class, 'getAll']);
 Route::Get('/admin/{id}', [AdminController::class, 'getById']);
 Route::Post('/admin', [AdminController::class, 'addAdmin']);
-Route::Delete('/admin/{id}', [AdminController::class, 'deleteAdmin']);
+Route::Delete('/admin/{id}', [AdminController::class, 'deleteAdmin']);  
 Route::Patch('/admin/{id}', [AdminController::class, 'editAdmin']);
 //section routes
 Route::Post('/section', [sectioncontroller::class, 'addSection']);
@@ -69,8 +69,8 @@ Route::group([
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
-    Route::get('/user-profile', [AuthController::class, 'userProfile']);    
-    Route::patch('/edit/{id}', [AuthController::class, 'editUser']);    
-    Route::delete('/delete/{id}', [AuthController::class, 'deleteUser']);    
-    Route::get('/', [AuthController::class, 'getAll']);    
+    Route::get('/user-profile', [AuthController::class, 'userProfile']);
+    Route::patch('/edit/{id}', [AuthController::class, 'editUser']);
+    Route::delete('/delete/{id}', [AuthController::class, 'deleteUser']);
 });
+Route::get('/user', [AuthController::class, 'getAll']);
