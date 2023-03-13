@@ -49,6 +49,7 @@ Route::Patch('/admin/{id}', [AdminController::class, 'editAdmin']);
 //section routes
 Route::Post('/section', [sectioncontroller::class, 'addSection']);
 Route::Get('/section/{id}', [sectioncontroller::class, 'getSection']);
+Route::Get('/section/grade/{grade_id}', [sectioncontroller::class, 'getSectionByGradeId']);
 Route::Get('/section', [sectioncontroller::class, 'getSections']);
 Route::Delete('/section/{id}', [sectioncontroller::class, 'deleteSection']);
 Route::Patch('/section/{id}', [sectioncontroller::class, 'editSection']);
