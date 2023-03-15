@@ -34,7 +34,7 @@ class StudentController extends Controller
         $phone = $request->input('phone_number');
         $enroll = $request->input('enrollment_date');
         //$headshot = $request->input('headshot');
-        $image_path = $request->file('image')->store('images', 'public');
+        $image_path = $request->file('headshot')->store('images', 'public');
         $section_id = $request->input('section_id');
 
         $section = Section::find($section_id);
