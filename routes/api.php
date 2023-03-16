@@ -28,6 +28,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //student routes
 Route::Post('/students', [StudentController::class, 'store']);
 Route::Get('/students', [StudentController::class, 'getStudents']);
+Route::get('/students/pagination', [StudentController::class, 'getStudentsByPagination']);
 Route::Get('student/attendance', [StudentController::class, 'getStudents_Attendance']);
 Route::Get('/students/{id}', [StudentController::class, 'getStudent']);
 Route::Get('/student_section/{id}', [StudentController::class, 'getStudentbySection']);
@@ -38,6 +39,7 @@ Route::get('/students/section/{section_id}', [StudentController::class, 'getStud
 //grade routes
 Route::Post('/grade', [GradeController::class, 'addGrade']);
 Route::Get('/grade', [GradeController::class, 'getGrades']);
+Route::Get('/grade/pagination', [GradeController::class, 'getGradesByPagination']);
 Route::Get('/grade/{id}', [GradeController::class, 'getGrade']);
 Route::Delete('/grade/{id}', [GradeController::class, 'deleteGrade']);
 Route::Put('/grade/{id}', [GradeController::class, 'editGrade']);
@@ -50,6 +52,7 @@ Route::Delete('/admin/{id}', [AdminController::class, 'deleteAdmin']);
 Route::Patch('/admin/{id}', [AdminController::class, 'editAdmin']);
 //section routes
 Route::Post('/section', [sectioncontroller::class, 'addSection']);
+Route::Get('/section/pagination', [sectioncontroller::class, 'getSectionsByPagination']);
 Route::Get('/section/{id}', [sectioncontroller::class, 'getSection']);
 Route::Get('/section/grade/{grade_id}', [sectioncontroller::class, 'getSectionByGradeId']);
 Route::Get('/section', [sectioncontroller::class, 'getSections']);
@@ -74,6 +77,7 @@ Route::group([
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::get('/user-profile', [AuthController::class, 'userProfile']);
+    Route::get('/user/pagination', [AuthController::class, 'getAllUsersByPaginate']);
 
     Route::patch('/edit/{id}', [AuthController::class, 'editUser']);
     Route::delete('/delete/{id}', [AuthController::class, 'deleteUser']);
