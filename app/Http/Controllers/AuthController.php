@@ -13,7 +13,7 @@ class AuthController extends Controller
      * @return void
      */
     public function __construct() {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'getAll', 'editUser', 'deleteUser']]);
     }
     /**
      * Get a JWT via given credentials.
@@ -44,6 +44,7 @@ class AuthController extends Controller
             'name' => 'required|string|between:2,100',
             'email' => 'required|string|email|max:100|unique:users',
             'password' => 'required|string|min:6',
+            'isSuperadmin' => 'boolean'
         ]);
         if($validator->fails()){
             return response()->json($validator->errors()->toJson(), 400);
@@ -99,4 +100,43 @@ class AuthController extends Controller
             'user' => auth()->user()
         ]);
     }
+
+    public function deleteUser(Request $req, $id){
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'attendance not found!',
+            ]);
+        }
+
+        $user->delete();
+        return response()->json([
+            'message' => 'User deleted Successfully!',
+        ]);
+    }
+
+    public function editUser(Request $req, $id){
+        $user =  User::find($id);
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'Admin not found!',
+            ]);
+        }
+
+        $inputs= $req->all();
+        $user->update($inputs);
+        return response()->json([
+            'message' => 'Admin edited successfully!',
+            'User' => $user,
+        ]);
+    }
+
+    public function getAll(Request $req){
+        $user = User::get();
+        return response()->json([
+           "message" => $user
+        ]);
+     }
 }

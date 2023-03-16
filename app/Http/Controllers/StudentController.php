@@ -6,33 +6,25 @@ use Illuminate\Http\RedirectResponse;
 use App\Models\Student;
 use App\Models\Section;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Response;
 
 class StudentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    // public function index(): Response
-    // {
-    //     $students = Student::all();
-
-    //     return view('students.index', compact('students'));
-    // }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    // public function create(): Response
-    // {
-    //     return view('students.create');
-    // }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Add a new student
     public function store(Request $request)
     {
+
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|unique:students',
+            'phone_number' => ['required', 'regex:/(^70|^71|^76|^78|^79|^81|^06|^03)[0-9]{6}$/'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => $validator->errors()->first(),
+            ], 422);
+        }
         $student = new Student;
 
         $First_name = $request->input('first_name');
@@ -55,6 +47,14 @@ class StudentController extends Controller
             ], 404);
         }
 
+        // Check if the section reach the max of students
+        $studentCount = $section->student()->count();
+        if ($studentCount >= $section->capacity) {
+            return response()->json([
+                'message' => 'The section has reached its capacity',
+            ], 400);
+        }
+
         $student->first_name = $First_name;
         $student->last_name = $Last_name;
         $student->email = $email;
@@ -70,26 +70,38 @@ class StudentController extends Controller
         return  response()->json([
             'success' => true,
             'message' => 'Student was successfully added',
-
-
         ]);
     }
 
+    // get All Students
     public function getStudents(Request $request)
     {
-        $student = Student::all();
-        return response()->json([
-            'message' => $student,
-        ]);
-    }
-
-    public function getStudentbySection(Request $request, $id)
-    {
-        $students = Student::where('section_id', $id)->get();
+        $students = Student::orderBy('first_name', 'asc')
+            ->paginate(10);
         return response()->json([
             'message' => $students,
         ]);
     }
+
+
+     // Get a student by section id
+     public function getStudentBySectionId(Request $req, $section_id)
+     {
+         $student = Student::where("section_id", $section_id)->get();
+ 
+         if (!$student) {
+             return response()->json([
+                 'message' => 'Student not found!',
+             ]);
+         }
+ 
+         return response()->json([
+             "message" => $student
+         ]);
+     }
+ 
+     // Get a student by id
+
     public function getStudent(Request $request, $id)
     {
         $student = Student::find($id);
@@ -103,6 +115,8 @@ class StudentController extends Controller
         ]);
     }
 
+
+    // Delete a student
     public function deleteStudent(Request $request, $id)
     {
         $student = Student::find($id);
@@ -121,6 +135,7 @@ class StudentController extends Controller
     }
 
 
+    // Edit a student
     public function editStudent(Request $request, $id)
     {
         $student =  Student::find($id);
@@ -131,57 +146,3 @@ class StudentController extends Controller
             'students' => $student,
         ]);
     }
-    /**
-     * Display the specified resource.
-     */
-
-    // public function show(string $id): Response
-    // {
-    //     return view('students.show', compact('student'));
-    // }
-
-    // /**
-    //  * Show the form for editing the specified resource.
-    //  */
-    // public function edit(string $id): Response
-    // {
-    //     return view('students.edit', compact('student'));
-    // }
-
-    // /**
-    //  * Update the specified resource in storage.
-    //  */
-    // public function update(Request $request, string $id): RedirectResponse
-    // {
-    //     $validatedData = $request->validate([
-    //         'first_name' => 'required|max:255',
-    //         'last_name' => 'required|max:255',
-    //         'email' => 'required|email|unique:students,email'
-    //        'birth_date' => 'date',
-    //        'phone_number' => 'required',
-    //        'enrollment_date' => 'required|date',
-    //        'headshot' => 'nullable|image|max:1024',
-    //        'section_id' => 'required|exists:sections,id',
-    //    ]);
-
-    //    if ($request->hasFile('headshot')) {
-    //        $path = $request->file('headshot')->store('public/images');
-    //        $validatedData['headshot'] = $path;
-    //    }
-
-    //    $student->update($validatedData);
-
-    //    return redirect()->route('students.show', $student);
-    // }
-
-    // /**
-    //  * Remove the specified resource from storage.
-    //  */
-    // public function destroy(string $id): RedirectResponse
-    // {
-    //     $student->delete();
-
-    //     return redirect()->route('students.index');
-
-    // }
-}

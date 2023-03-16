@@ -70,6 +70,19 @@ class sectioncontroller extends Controller
         ]);
     }
 
+    //Get sections by grade id 
+    public function getSectionByGradeId(Request $request, $grade_id){
+        $sections = Section::where('grade_id', $grade_id)->get();
+        if (!$sections) {
+            return response()->json([
+                'message' => 'Section not found!',
+            ]);
+        }
+        return response()->json([
+            'message' => $sections,
+        ]);
+    }
+
     // Delete a section
     public function deleteSection(Request $request, $id)
     {

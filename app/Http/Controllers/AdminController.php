@@ -27,9 +27,11 @@ class AdminController extends Controller
         $username = $req->input("username");
         $email = $req->input("email");
         $password = hash::make($req->input('password'));
+        $isSuperadmin = $req->input('isSuperadmin');
         $admin->username = $username;
         $admin->email = $email;
         $admin->password = $password;
+        $admin->isSpueradmin = $isSuperadmin; 
         $admin->save();
         return response()->json([
            "message" => "Success"

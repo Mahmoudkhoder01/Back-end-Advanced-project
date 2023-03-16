@@ -33,6 +33,7 @@ Route::Get('/students/{id}', [StudentController::class, 'getStudent']);
 Route::Get('/student_section/{id}', [StudentController::class, 'getStudentbySection']);
 Route::Delete('/students/{id}', [StudentController::class, 'deleteStudent']);
 Route::Patch('/students/{id}', [StudentController::class, 'editStudent']);
+Route::get('/students/section/{section_id}', [StudentController::class, 'getStudentBySectionId']);
 
 //grade routes
 Route::Post('/grade', [GradeController::class, 'addGrade']);
@@ -45,11 +46,12 @@ Route::Put('/grade/{id}', [GradeController::class, 'editGrade']);
 Route::Get('/admin', [AdminController::class, 'getAll']);
 Route::Get('/admin/{id}', [AdminController::class, 'getById']);
 Route::Post('/admin', [AdminController::class, 'addAdmin']);
-Route::Delete('/admin/{id}', [AdminController::class, 'deleteAdmin']);
+Route::Delete('/admin/{id}', [AdminController::class, 'deleteAdmin']);  
 Route::Patch('/admin/{id}', [AdminController::class, 'editAdmin']);
 //section routes
 Route::Post('/section', [sectioncontroller::class, 'addSection']);
 Route::Get('/section/{id}', [sectioncontroller::class, 'getSection']);
+Route::Get('/section/grade/{grade_id}', [sectioncontroller::class, 'getSectionByGradeId']);
 Route::Get('/section', [sectioncontroller::class, 'getSections']);
 Route::Delete('/section/{id}', [sectioncontroller::class, 'deleteSection']);
 Route::Patch('/section/{id}', [sectioncontroller::class, 'editSection']);
@@ -72,4 +74,8 @@ Route::group([
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::get('/user-profile', [AuthController::class, 'userProfile']);
+
+    Route::patch('/edit/{id}', [AuthController::class, 'editUser']);
+    Route::delete('/delete/{id}', [AuthController::class, 'deleteUser']);
 });
+Route::get('/user', [AuthController::class, 'getAll']);

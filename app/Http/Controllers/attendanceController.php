@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\attendance;
 use App\Models\Student;
 use App\Models\Section;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 
 class attendanceController extends Controller
@@ -24,12 +25,19 @@ class attendanceController extends Controller
                 'message' => 'No student found to take attendance',
             ], 404);
         }
+        $validator = Validator::make($request->all(), [
+            'status' => 'required|in:present,absent',
+            'section_id' => 'required|exists:sections,id',
+            'student_id' => 'required|exists:students,id',
+            'date' => 'required|date',
+        ]);
 
-        $section = Section::find($section_id);
-        if (!$section) {
+
+        if ($validator->fails()) {
             return response()->json([
-                'message' => 'No section found to take attendance',
-            ], 404);
+                'message' => 'Validation failed',
+                'errors' => $validator->errors(),
+            ], 422);
         }
 
         $attendance->section()->associate($section);
@@ -39,10 +47,12 @@ class attendanceController extends Controller
         $attendance->save();
 
         return response()->json([
-            'message' => 'Attendance taked!',
-
+            'message' => 'Attendance taken!',
         ]);
     }
+
+
+
 
     // Get all attendances
     public function getAll(Request $req)
