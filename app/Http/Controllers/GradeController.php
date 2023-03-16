@@ -36,7 +36,7 @@ class GradeController extends Controller
     // Get all grades
     public function getGrades(Request $request)
     {
-        $grades = Grade::with('section')->get()->paginate(10);
+        $grades = Grade::with('section')->paginate(10);
         return response()->json([
             'message' => $grades,
         ]);

@@ -117,7 +117,7 @@ class AuthController extends Controller
     }
 
     public function editUser(Request $req, $id){
-        $user =  User::find($id)->paginate(10);;
+        $user =  User::find($id)->paginate(10);
 
         if (!$user) {
             return response()->json([
@@ -134,7 +134,7 @@ class AuthController extends Controller
     }
 
     public function getAll(Request $req){
-        $user = User::get();
+        $user = User::paginate(10);
         return response()->json([
            "message" => $user
         ]);
