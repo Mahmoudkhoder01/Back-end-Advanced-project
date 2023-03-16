@@ -18,32 +18,45 @@ class attendanceController extends Controller
         $status = $request->input('status');
         $section_id = $request->input('section_id');
         $student_id = $request->input('student_id');
-        $date = $request->input('attendance_date');
+        $date = $request->input('date');
         $student = Student::find($student_id);
         if (!$student) {
             return response()->json([
                 'message' => 'No student found to take attendance',
             ], 404);
         }
-        $validator = Validator::make($request->all(), [
-            'status' => 'required|in:present,absent',
-            'section_id' => 'required|exists:sections,id',
-            'student_id' => 'required|exists:students,id',
-            'date' => 'required|date',
-        ]);
+        // $validator = Validator::make($request->all(), [
+        //     'status' => 'required|in:present,absent',
+        //     'section_id' => 'required|exists:sections,id',
+        //     'student_id' => 'required|exists:students,id',
+        //     'attendance_date' => 'required|date',
+        // ]);
 
 
-        if ($validator->fails()) {
+        // if ($validator->fails()) {
+        //     return response()->json([
+        //         'message' => 'Validation failed',
+        //         'errors' => $validator->errors(),
+        //     ], 422);
+        // }
+
+        $section = Section::find($section_id);
+        if (!$section) {
             return response()->json([
-                'message' => 'Validation failed',
-                'errors' => $validator->errors(),
-            ], 422);
+                'message' => 'No section found to take attendance',
+            ], 404);
+        }
+        $student = Student::find($student_id);
+        if (!$student) {
+            return response()->json([
+                'message' => 'No student found to take attendance',
+            ], 404);
         }
 
         $attendance->section()->associate($section);
         $attendance->student()->associate($student);
         $attendance->status = $status;
-        $attendance->attendance_date = $date;
+        $attendance->date = $date;
         $attendance->save();
 
         return response()->json([
