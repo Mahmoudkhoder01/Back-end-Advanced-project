@@ -146,3 +146,4 @@ class StudentController extends Controller
             'students' => $student,
         ]);
     }
+}
