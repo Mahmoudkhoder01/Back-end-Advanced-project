@@ -14,7 +14,17 @@ class attendanceController extends Controller
     //Take an attendance
     public function takeAttendance(Request $request)
     {
-
+        $attendance = new attendance;
+        $status = $request->input('status');
+        $section_id = $request->input('section_id');
+        $student_id = $request->input('student_id');
+        $date = $request->input('attendance_date');
+        $student = Student::find($student_id);
+        if (!$student) {
+            return response()->json([
+                'message' => 'No student found to take attendance',
+            ], 404);
+        }
         $validator = Validator::make($request->all(), [
             'status' => 'required|in:present,absent',
             'section_id' => 'required|exists:sections,id',
@@ -30,12 +40,10 @@ class attendanceController extends Controller
             ], 422);
         }
 
-        $attendance = new attendance;
-        $attendance->attendance_date = $request->input('date');
-        $attendance->section()->associate($request->input('section_id'));
-        $attendance->student()->associate($request->input('student_id'));
-        $attendance->status = $request->input('status');
-
+        $attendance->section()->associate($section);
+        $attendance->student()->associate($student);
+        $attendance->status = $status;
+        $attendance->attendance_date = $date;
         $attendance->save();
 
         return response()->json([
@@ -70,7 +78,14 @@ class attendanceController extends Controller
             "message" => $attendance
         ]);
     }
+    // get attendance by date 
+    public function getAttendanceByDate(Request $request, $date)
+    {
 
+        $attendances = Attendance::whereDate('attendance_date', $date)->get();
+
+        return response()->json(['attendances' => $attendances]);
+    }
 
     // Get an attendance by section id
     public function getAttendanceBySectionId(Request $req, $section_id)

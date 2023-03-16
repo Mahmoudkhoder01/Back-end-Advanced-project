@@ -28,7 +28,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //student routes
 Route::Post('/students', [StudentController::class, 'store']);
 Route::Get('/students', [StudentController::class, 'getStudents']);
+Route::Get('student/attendance', [StudentController::class, 'getStudents_Attendance']);
 Route::Get('/students/{id}', [StudentController::class, 'getStudent']);
+Route::Get('/student_section/{id}', [StudentController::class, 'getStudentbySection']);
 Route::Delete('/students/{id}', [StudentController::class, 'deleteStudent']);
 Route::Patch('/students/{id}', [StudentController::class, 'editStudent']);
 Route::get('/students/section/{section_id}', [StudentController::class, 'getStudentBySectionId']);
@@ -56,6 +58,7 @@ Route::Patch('/section/{id}', [sectioncontroller::class, 'editSection']);
 //attendance routes
 Route::Post('/attendance', [attendancecontroller::class, 'takeAttendance']);
 Route::Get('/attendance', [attendancecontroller::class, 'getAll']);
+Route::Get('/attendance/{date}', [attendancecontroller::class, 'getAttendanceByDate']);
 Route::Get('/attendance/student/{student_id}', [attendancecontroller::class, 'getAttendanceByStudentId']);
 Route::Get('/attendance/section/{section_id}', [attendancecontroller::class, 'getAttendanceBySectionId']);
 Route::Delete('/attendance/{id}', [attendancecontroller::class, 'deleteAttendance']);
@@ -71,6 +74,7 @@ Route::group([
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::get('/user-profile', [AuthController::class, 'userProfile']);
+
     Route::patch('/edit/{id}', [AuthController::class, 'editUser']);
     Route::delete('/delete/{id}', [AuthController::class, 'deleteUser']);
 });

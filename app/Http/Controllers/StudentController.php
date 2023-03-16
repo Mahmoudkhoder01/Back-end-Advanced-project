@@ -34,9 +34,11 @@ class StudentController extends Controller
         $phone = $request->input('phone_number');
         $enroll = $request->input('enrollment_date');
         //$headshot = $request->input('headshot');
-        $image_path = $request->file('headshot')->store('images', 'public');
+        $image_path = $request->file('image')->store('images', 'public');
         $section_id = $request->input('section_id');
-
+        $request->validate([
+            'email' => 'regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix'
+        ]);
         $section = Section::find($section_id);
         // Check if we don't have a section
         if (!$section) {
@@ -81,6 +83,7 @@ class StudentController extends Controller
         ]);
     }
 
+
      // Get a student by section id
      public function getStudentBySectionId(Request $req, $section_id)
      {
@@ -98,6 +101,7 @@ class StudentController extends Controller
      }
  
      // Get a student by id
+
     public function getStudent(Request $request, $id)
     {
         $student = Student::find($id);
@@ -110,6 +114,7 @@ class StudentController extends Controller
             'message' => $student,
         ]);
     }
+
 
     // Delete a student
     public function deleteStudent(Request $request, $id)
@@ -129,6 +134,7 @@ class StudentController extends Controller
         ]);
     }
 
+
     // Edit a student
     public function editStudent(Request $request, $id)
     {
@@ -140,4 +146,3 @@ class StudentController extends Controller
             'students' => $student,
         ]);
     }
-}
