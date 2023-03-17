@@ -77,7 +77,7 @@ class StudentController extends Controller
     public function getStudentsByPagination(Request $request)
     {
         $students = Student::orderBy('first_name', 'asc')
-            ->paginate(10);
+            ->paginate(8);
         return response()->json([
             'message' => $students,
         ]);

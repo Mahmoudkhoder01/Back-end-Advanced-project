@@ -146,7 +146,7 @@ class AuthController extends Controller
 
     public function getAllUsersByPaginate(Request $req)
     {
-        $user = User::paginate(10);
+        $user = User::paginate(8);
         return response()->json([
             "message" => $user
         ]);

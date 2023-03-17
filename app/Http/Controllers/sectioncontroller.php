@@ -49,7 +49,7 @@ class sectioncontroller extends Controller
     // Get all sections by pagination
     public function getSectionsByPagination(Request $request)
     {
-        $sections = Section::with('student')->paginate(10);
+        $sections = Section::with('student')->paginate(8);
         return response()->json([
             'message' => $sections,
         ]);
