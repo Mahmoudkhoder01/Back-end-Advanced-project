@@ -11,7 +11,7 @@ use Illuminate\Http\Response;
 class AdminController extends Controller
 {
     public function getAll(Request $req){
-        $admin = Admin::get();
+        $admin = Admin::paginate(10);
         return response()->json([
            "message" => $admin
         ]);

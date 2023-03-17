@@ -73,34 +73,42 @@ class StudentController extends Controller
         ]);
     }
 
-    // get All Students
-    public function getStudents(Request $request)
+    // get All Students By Pagination
+    public function getStudentsByPagination(Request $request)
     {
         $students = Student::orderBy('first_name', 'asc')
-            ->paginate(10);
+            ->paginate(8);
         return response()->json([
             'message' => $students,
         ]);
     }
 
+    // get All Students
+    public function getStudents(Request $request)
+    {
+        $students = Student::get();
+        return response()->json([
+            'message' => $students,
+        ]);
+    }
 
-     // Get a student by section id
-     public function getStudentBySectionId(Request $req, $section_id)
-     {
-         $student = Student::where("section_id", $section_id)->get();
- 
-         if (!$student) {
-             return response()->json([
-                 'message' => 'Student not found!',
-             ]);
-         }
- 
-         return response()->json([
-             "message" => $student
-         ]);
-     }
- 
-     // Get a student by id
+    // Get a student by section id
+    public function getStudentBySectionId(Request $req, $section_id)
+    {
+        $student = Student::where("section_id", $section_id)->get();
+
+        if (!$student) {
+            return response()->json([
+                'message' => 'Student not found!',
+            ]);
+        }
+
+        return response()->json([
+            "message" => $student
+        ]);
+    }
+
+    // Get a student by id
 
     public function getStudent(Request $request, $id)
     {
