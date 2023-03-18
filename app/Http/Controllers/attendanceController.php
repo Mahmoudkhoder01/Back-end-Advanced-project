@@ -18,14 +18,14 @@ class attendanceController extends Controller
         $status = $request->input('status');
         $section_id = $request->input('section_id');
         $student_id = $request->input('student_id');
-        $date = $request->input('attendance_date');
+        $attendance_date = $request->input('attendance_date');
         $student = Student::find($student_id);
         if (!$student) {
             return response()->json([
                 'message' => 'No student found to take attendance',
             ], 404);
         }
-        $section = Section::find($student_id);
+        $section = Section::find($section_id);
         if (!$student) {
             return response()->json([
                 'message' => 'No section found to take attendance',
@@ -35,7 +35,7 @@ class attendanceController extends Controller
             'status' => 'required|in:present,absent',
             'section_id' => 'required|exists:sections,id',
             'student_id' => 'required|exists:students,id',
-            'date' => 'required|date',
+            'attendance_date' => 'required|date',
         ]);
 
 
@@ -49,15 +49,13 @@ class attendanceController extends Controller
         $attendance->section()->associate($section);
         $attendance->student()->associate($student);
         $attendance->status = $status;
-        $attendance->attendance_date = $date;
+        $attendance->attendance_date = $attendance_date;
         $attendance->save();
 
         return response()->json([
             'message' => 'Attendance taken!',
         ]);
     }
-
-
 
 
     // Get all attendances
@@ -108,6 +106,23 @@ class attendanceController extends Controller
             "message" => $attendance
         ]);
     }
+
+ // Get an attendance by section id and date
+//  public function getAttendanceBySectionIdAndDate(Request $request, $section_id)
+//  { 
+//     $attendance_date = $request->input('attendance_date');
+//     echo $attendance_date;
+//     $attendance = Attendance::whereDate('attendance_date', $attendance_date)
+//         ->get();
+//     if ($attendance->isEmpty()) {
+//         return response()->json([
+//             'message' => 'Attendance not found for this date!',
+//         ]);
+//     }
+//     return response()->json([
+//         'attendance' => $attendance,
+//     ]);
+// }
 
     // Edit an existing attendance
     public function editAttendance(Request $request, $id)
