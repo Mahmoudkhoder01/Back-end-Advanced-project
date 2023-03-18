@@ -55,6 +55,15 @@ class sectioncontroller extends Controller
         ]);
     }
 
+    // Get all sections by class id by pagination
+    public function getSectionsByGradeIdByPagination(Request $request,$grade_id)
+    {
+        $sections = Section::where('grade_id', $grade_id)->paginate(8);
+        return response()->json([
+            'message' => $sections,
+        ]);
+    }
+
     
     // Get all sections
     public function getSections(Request $request)

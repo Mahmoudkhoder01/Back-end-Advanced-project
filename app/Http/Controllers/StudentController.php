@@ -108,8 +108,23 @@ class StudentController extends Controller
         ]);
     }
 
-    // Get a student by id
+    // Get a student by section id by pagination
+    public function getStudentBySectionIdByPagination(Request $req, $section_id)
+    {
+        $student = Student::where("section_id", $section_id)->paginate(8);
 
+        if (!$student) {
+            return response()->json([
+                'message' => 'Student not found!',
+            ]);
+        }
+
+        return response()->json([
+            "message" => $student
+        ]);
+    }
+
+    // Get a student by id
     public function getStudent(Request $request, $id)
     {
         $student = Student::find($id);

@@ -35,6 +35,7 @@ Route::Get('/student_section/{id}', [StudentController::class, 'getStudentbySect
 Route::Delete('/students/{id}', [StudentController::class, 'deleteStudent']);
 Route::Patch('/students/{id}', [StudentController::class, 'editStudent']);
 Route::get('/students/section/{section_id}', [StudentController::class, 'getStudentBySectionId']);
+Route::get('/students/section/{section_id}/pagination', [StudentController::class, 'getStudentBySectionIdByPagination']);
 
 //grade routes
 Route::Post('/grade', [GradeController::class, 'addGrade']);
@@ -53,6 +54,7 @@ Route::Patch('/admin/{id}', [AdminController::class, 'editAdmin']);
 //section routes
 Route::Post('/section', [sectioncontroller::class, 'addSection']);
 Route::Get('/section/pagination', [sectioncontroller::class, 'getSectionsByPagination']);
+Route::Get('/section/{grade}/pagination', [sectioncontroller::class, 'getSectionsByGradeIdByPagination']);
 Route::Get('/section/{id}', [sectioncontroller::class, 'getSection']);
 Route::Get('/section/grade/{grade_id}', [sectioncontroller::class, 'getSectionByGradeId']);
 Route::Get('/section', [sectioncontroller::class, 'getSections']);
