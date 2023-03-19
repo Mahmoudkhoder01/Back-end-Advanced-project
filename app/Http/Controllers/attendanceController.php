@@ -58,6 +58,52 @@ class attendanceController extends Controller
     }
 
 
+     //Take an attendanceforAll
+     public function takeAttendanceforAll(Request $request){
+    $attendances = $request->input('attendances');
+
+    $validator = Validator::make($request->all(), [
+        'attendances' => 'required|array',
+        'attendances.*.status' => 'required|in:present,absent,late',
+        'attendances.*.section_id' => 'required|exists:sections,id',
+        'attendances.*.student_id' => 'required|exists:students,id',
+        'attendances.*.attendance_date' => 'required|date',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'message' => 'Validation failed',
+            'errors' => $validator->errors(),
+        ], 422);
+    }
+
+    foreach ($attendances as $attendanceData) {
+        $student = Student::find($attendanceData['student_id']);
+        if (!$student) {
+            return response()->json([
+                'message' => 'No student found to take attendance',
+            ], 404);
+        }
+
+        $section = Section::find($attendanceData['section_id']);
+        if (!$section) {
+            return response()->json([
+                'message' => 'No section found to take attendance',
+            ], 404);
+        }
+
+        $attendance = new Attendance();
+        $attendance->section()->associate($section);
+        $attendance->student()->associate($student);
+        $attendance->status = $attendanceData['status'];
+        $attendance->attendance_date = $attendanceData['attendance_date'];
+        $attendance->save();
+    }
+
+    return response()->json([
+        'message' => 'Attendance taken!',
+    ]);
+}
     // Get all attendances
     public function getAll(Request $req)
     {
