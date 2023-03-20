@@ -62,6 +62,7 @@ Route::Delete('/section/{id}', [sectioncontroller::class, 'deleteSection']);
 Route::Patch('/section/{id}', [sectioncontroller::class, 'editSection']);
 //attendance routes
 Route::Post('/attendance', [attendancecontroller::class, 'takeAttendance']);
+Route::Post('/attendanceforAll', [attendancecontroller::class, 'takeAttendanceforAll']);
 Route::Get('/attendance', [attendancecontroller::class, 'getAll']);
 Route::Get('/attendance/{date}', [attendancecontroller::class, 'getAttendanceByDate']);
 Route::Get('/attendance/student/{student_id}', [attendancecontroller::class, 'getAttendanceByStudentId']);
