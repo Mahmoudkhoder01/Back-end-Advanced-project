@@ -61,7 +61,7 @@ class attendanceController extends Controller
     // Get all attendances
     public function getAll(Request $req)
     {
-        $attendance = attendance::get()->paginate(10);
+        $attendance = attendance::get();
         return response()->json([
             "message" => $attendance
         ]);
