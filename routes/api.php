@@ -67,7 +67,7 @@ Route::Get('/attendance', [attendancecontroller::class, 'getAll']);
 Route::Get('/attendance/{date}', [attendancecontroller::class, 'getAttendanceByDate']);
 Route::Get('/attendance/student/{student_id}', [attendancecontroller::class, 'getAttendanceByStudentId']);
 Route::Get('/attendance/section/{section_id}', [attendancecontroller::class, 'getAttendanceBySectionId']);
-// Route::Get('/attendance/bydate&section/{section_id}', [attendancecontroller::class, 'getAttendanceBySectionIdAndDate']);
+Route::Get('/attendance/bydate&section/{section_id}', [attendancecontroller::class, 'getAttendanceBySectionIdAndDate']);
 Route::Delete('/attendance/{id}', [attendancecontroller::class, 'deleteAttendance']);
 Route::Patch('/attendance/{id}', [attendancecontroller::class, 'editAttendance']);
 Route::Get('/attendance/student/{student_id}/daterange', [attendancecontroller::class, 'getAttendanceByStudentIdAndDateRange']);
