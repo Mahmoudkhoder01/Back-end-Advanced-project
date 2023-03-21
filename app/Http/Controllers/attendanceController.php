@@ -131,12 +131,9 @@ class attendanceController extends Controller
     // get attendance by date 
     public function getAttendanceByDate(Request $request, $date)
     {
-
         $attendances = Attendance::whereDate('attendance_date', $date)->get();
-
         return response()->json(['attendances' => $attendances]);
     }
-
     // Get an attendance by section id
     public function getAttendanceBySectionId(Request $req, $section_id)
     {
@@ -154,19 +151,17 @@ class attendanceController extends Controller
     }
 
 //  Get an attendance by section id and date
- public function getAttendanceBySectionIdAndDate(Request $request, $section_id)
+ public function getAttendanceBySectionIdAndDate(Request $request, $section_id,$attendance_date)
  { 
-    $attendance_date = $request->input('attendance_date');
-    echo $attendance_date;
-    $attendance = Attendance::whereDate('attendance_date', $attendance_date)
+    $attendance = Attendance::where('section_id',$section_id)->whereDate('attendance_date', $attendance_date)
         ->get();
     if ($attendance->isEmpty()) {
         return response()->json([
-            'message' => 'Attendance not found for this date!',
+            'message' => [],
         ]);
     }
     return response()->json([
-        'attendance' => $attendance,
+        'message' => $attendance,
     ]);
 }
 
