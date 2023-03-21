@@ -99,7 +99,7 @@ class StudentController extends Controller
 
         if (!$student) {
             return response()->json([
-                'message' => 'Student not found!',
+                'message' =>[],
             ]);
         }
 
