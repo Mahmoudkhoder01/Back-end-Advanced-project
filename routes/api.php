@@ -28,6 +28,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //student routes
 Route::Post('/students', [StudentController::class, 'store']);
 Route::Get('/students', [StudentController::class, 'getStudents']);
+Route::get('/students/section/{section_id}/pagination', [StudentController::class, 'getStudentBySectionIdByPagination']);
+Route::get('/students/attendance/section/{section_id}/pagination', [StudentController::class, 'getStudentBySectionIdByPaginationInAttendance']);
 Route::get('/students/pagination', [StudentController::class, 'getStudentsByPagination']);
 Route::Get('student/attendance', [StudentController::class, 'getStudents_Attendance']);
 Route::Get('/students/{id}', [StudentController::class, 'getStudent']);
@@ -35,7 +37,6 @@ Route::Get('/student_section/{id}', [StudentController::class, 'getStudentbySect
 Route::Delete('/students/{id}', [StudentController::class, 'deleteStudent']);
 Route::Patch('/students/{id}', [StudentController::class, 'editStudent']);
 Route::get('/students/section/{section_id}', [StudentController::class, 'getStudentBySectionId']);
-Route::get('/students/section/{section_id}/pagination', [StudentController::class, 'getStudentBySectionIdByPagination']);
 
 //grade routes
 Route::Post('/grade', [GradeController::class, 'addGrade']);
