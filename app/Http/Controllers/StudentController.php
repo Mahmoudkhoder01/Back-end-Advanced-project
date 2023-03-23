@@ -126,7 +126,7 @@ class StudentController extends Controller
     // Get a student by section id by pagination in Attendance
     public function getStudentBySectionIdByPaginationInAttendance(Request $req, $section_id)
     {
-        $student = Student::where("section_id", $section_id)->paginate(15);
+        $student = Student::where("section_id", $section_id)->paginate(12);
 
         if (!$student) {
             return response()->json([
