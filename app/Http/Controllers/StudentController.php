@@ -7,6 +7,7 @@ use App\Models\Student;
 use App\Models\Section;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Response;
 
 class StudentController extends Controller
@@ -166,6 +167,9 @@ class StudentController extends Controller
             ]);
         }
 
+        if ($student->headshot) {
+            Storage::disk('public')->delete($student->headshot);
+        }
         $student->delete();
         return response()->json([
             'message' => 'student deleted Successfully!',
@@ -174,14 +178,74 @@ class StudentController extends Controller
 
 
     // Edit a student
-    public function editStudent(Request $request, $id)
-    {
-        $student =  Student::find($id);
-        $inputs = $request->except('_method');
-        $student->update($inputs);
+    // public function editStudent(Request $request, $id)
+    // {
+    //     $student =  Student::find($id);
+    //     $inputs = $request->except('_method');
+    //     $student->update($inputs);
+    //     return response()->json([
+    //         'message' => 'student edited successfully!',
+    //         'students' => $student,
+    //     ]);
+    // }
+
+    // Edit a student
+public function editStudent(Request $request, $id)
+{
+    $validator = Validator::make($request->all(), [
+        'email' => 'required|email|unique:students,email,' . $id,
+        'phone_number' => ['required', 'regex:/(^70|^71|^76|^78|^79|^81|^06|^03)[0-9]{6}$/'],
+    ]);
+
+    if ($validator->fails()) {
         return response()->json([
-            'message' => 'student edited successfully!',
-            'students' => $student,
-        ]);
+            'message' => $validator->errors()->first(),
+        ], 422);
     }
+
+    $student = Student::find($id);
+
+    if (!$student) {
+        return response()->json([
+            'message' => 'Student not found!',
+        ], 404);
+    }
+
+    $section_id = $request->input('section_id');
+    $section = Section::find($section_id);
+
+    if (!$section) {
+        return response()->json([
+            'message' => 'No section found to add a new student',
+        ], 404);
+    }
+
+    $studentCount = $section->student()->count();
+
+    if ($studentCount >= $section->capacity) {
+        return response()->json([
+            'message' => 'The section has reached its capacity',
+        ], 400);
+    }
+
+    $student->first_name = $request->input('first_name');
+    $student->last_name = $request->input('last_name');
+    $student->email = $request->input('email');
+    $student->birth_date = $request->input('birth_date');
+    $student->phone_number = $request->input('phone_number');
+    $student->enrollment_date = $request->input('enrollment_date');
+    $student->Section()->associate($section);
+
+    if ($request->hasFile('image')) {
+        Storage::disk('public')->delete($student->headshot);
+        $student->headshot = $request->file('image')->store('images', 'public');
+    }
+
+    $student->save();
+
+    return response()->json([
+        'message' => 'Student updated successfully!',
+        'data' => $student,
+    ]);
+}
 }
