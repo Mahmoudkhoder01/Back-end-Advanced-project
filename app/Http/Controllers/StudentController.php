@@ -50,7 +50,7 @@ class StudentController extends Controller
         }
 
         // Check if the section reach the max of students
-        $studentCount = $section->student()->count();
+        $studentCount = $section->student()->count(); 
         if ($studentCount >= $section->capacity) {
             return response()->json([
                 'message' => 'The section has reached its capacity',
