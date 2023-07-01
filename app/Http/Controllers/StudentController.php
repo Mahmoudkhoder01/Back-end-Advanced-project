@@ -26,7 +26,7 @@ class StudentController extends Controller
             ], 422);
         }
         
-        $student = new Student;
+        $student = new Student; 
 
         $First_name = $request->input('first_name');
         $Last_name = $request->input('last_name');
