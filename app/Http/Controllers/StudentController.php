@@ -25,6 +25,7 @@ class StudentController extends Controller
                 'message' => $validator->errors()->first(),
             ], 422);
         }
+        
         $student = new Student;
 
         $First_name = $request->input('first_name');
@@ -34,12 +35,13 @@ class StudentController extends Controller
         $phone = $request->input('phone_number');
         $enroll = $request->input('enrollment_date');
         //$headshot = $request->input('headshot');
-        $image_path = $request->file('image')->store('images', 'public');
+        $image_path = $request->file('headshot')->store('images', 'public');
         $section_id = $request->input('section_id');
         $request->validate([
             'email' => 'regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix'
         ]);
         $section = Section::find($section_id);
+
         // Check if we don't have a section
         if (!$section) {
             return response()->json([
@@ -123,6 +125,7 @@ class StudentController extends Controller
             "message" => $student
         ]);
     }
+
     // Get a student by section id by pagination in Attendance
     public function getStudentBySectionIdByPaginationInAttendance(Request $req, $section_id)
     {
@@ -153,7 +156,6 @@ class StudentController extends Controller
         ]);
     }
 
-
     // Delete a student
     public function deleteStudent(Request $request, $id)
     {
@@ -171,7 +173,6 @@ class StudentController extends Controller
             'message' => 'student deleted Successfully!',
         ]);
     }
-
 
     // Edit a student
     public function editStudent(Request $request, $id)
