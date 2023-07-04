@@ -46,12 +46,6 @@ Route::Get('/grade/{id}', [GradeController::class, 'getGrade']);
 Route::Delete('/grade/{id}', [GradeController::class, 'deleteGrade']);
 Route::Put('/grade/{id}', [GradeController::class, 'editGrade']);
 
-//admin routes
-Route::Get('/admin', [AdminController::class, 'getAll']);
-Route::Get('/admin/{id}', [AdminController::class, 'getById']);
-Route::Post('/admin', [AdminController::class, 'addAdmin']);
-Route::Delete('/admin/{id}', [AdminController::class, 'deleteAdmin']);  
-Route::Patch('/admin/{id}', [AdminController::class, 'editAdmin']);
 //section routes
 Route::Post('/section', [sectioncontroller::class, 'addSection']);
 Route::Get('/section/pagination', [sectioncontroller::class, 'getSectionsByPagination']);
@@ -61,6 +55,7 @@ Route::Get('/section/grade/{grade_id}', [sectioncontroller::class, 'getSectionBy
 Route::Get('/section', [sectioncontroller::class, 'getSections']);
 Route::Delete('/section/{id}', [sectioncontroller::class, 'deleteSection']);
 Route::Patch('/section/{id}', [sectioncontroller::class, 'editSection']);
+
 //attendance routes
 Route::Post('/attendance', [attendancecontroller::class, 'takeAttendance']);
 Route::Post('/attendanceforAll', [attendancecontroller::class, 'takeAttendanceforAll']);
@@ -87,4 +82,5 @@ Route::group([
     Route::patch('/edit/{id}', [AuthController::class, 'editUser']);
     Route::delete('/delete/{id}', [AuthController::class, 'deleteUser']);
 });
+
 Route::get('/user', [AuthController::class, 'getAll']);

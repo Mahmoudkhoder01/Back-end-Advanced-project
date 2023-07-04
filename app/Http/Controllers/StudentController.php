@@ -9,13 +9,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
 {
     // Add a new student
     public function store(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|unique:students',
             'phone_number' => ['required', 'regex:/(^70|^71|^76|^78|^79|^81|^06|^03)[0-9]{6}$/'],
@@ -26,7 +26,8 @@ class StudentController extends Controller
                 'message' => $validator->errors()->first(),
             ], 422);
         }
-        $student = new Student;
+        
+        $student = new Student; 
 
         $First_name = $request->input('first_name');
         $Last_name = $request->input('last_name');
@@ -35,12 +36,13 @@ class StudentController extends Controller
         $phone = $request->input('phone_number');
         $enroll = $request->input('enrollment_date');
         //$headshot = $request->input('headshot');
-        $image_path = $request->file('image')->store('images', 'public');
         $section_id = $request->input('section_id');
+        $url = Storage::url('file.jpg');
         $request->validate([
             'email' => 'regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix'
         ]);
         $section = Section::find($section_id);
+
         // Check if we don't have a section
         if (!$section) {
             return response()->json([
@@ -49,7 +51,7 @@ class StudentController extends Controller
         }
 
         // Check if the section reach the max of students
-        $studentCount = $section->student()->count();
+        $studentCount = $section->student()->count(); 
         if ($studentCount >= $section->capacity) {
             return response()->json([
                 'message' => 'The section has reached its capacity',
@@ -124,6 +126,7 @@ class StudentController extends Controller
             "message" => $student
         ]);
     }
+
     // Get a student by section id by pagination in Attendance
     public function getStudentBySectionIdByPaginationInAttendance(Request $req, $section_id)
     {
@@ -154,7 +157,6 @@ class StudentController extends Controller
         ]);
     }
 
-
     // Delete a student
     public function deleteStudent(Request $request, $id)
     {
@@ -175,7 +177,6 @@ class StudentController extends Controller
             'message' => 'student deleted Successfully!',
         ]);
     }
-
 
     // Edit a student
     // public function editStudent(Request $request, $id)

@@ -25,12 +25,14 @@ class attendanceController extends Controller
                 'message' => 'No student found to take attendance',
             ], 404);
         }
+
         $section = Section::find($section_id);
         if (!$student) {
             return response()->json([
                 'message' => 'No section found to take attendance',
             ], 404);
         }
+        
         $validator = Validator::make($request->all(), [
             'status' => 'required|in:present,absent',
             'section_id' => 'required|exists:sections,id',
