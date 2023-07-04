@@ -16,6 +16,7 @@ class Student extends Model
         "enrollment_date",
         "headshot"
     ];
+    
     public function section()
     {
         return $this->belongsTo(Section::class);
